@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理页面</title>
+    <link rel="stylesheet" type="text/css" href="../static/Z-external/css/Main.css" />
+    <script type="text/javascript" src="../static/Z-external/js/jQuery.js"></script>
+    <script type="text/javascript" src="../static/Z-external/js/Main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+<div id="top">
+    <div class="l">后台管理页面</div>
+    <div class="r"><strong></strong> <a href="/exit" onclose="">退出</a></div>
+</div>
+<div id="center">
+    <div id="all">
+        <div class="left">
+            <div id="menus">
+                <h3>信息管理<div class="s"></div></h3>
+                <div class="m" style="display:block;">
+                    <div><a href="/userlist" target="mkj">用户列表</a></div>
+                    <div><a href="/roadsegmentlist" target="mkj">路段管理</a></div>
+                    <div><a href="/ParkingSpaceList" target="mkj">泊位管理</a></div>
+                    <div><a href="/VehicleList" target="mkj">车辆管理</a></div>
+                    <div><a href="/OrderTableList" target="mkj">订单管理</a></div>
+                </div>
+            </div>
+            <div id="tg"><div></div></div>
+        </div>
+        <div class="right"><iframe id="mkj" name="mkj" src="/userlist" frameborder="0"></iframe></div>
+    </div>
+</div>
+<div id="foot">贺福林 &copy; 2023</div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>居中表单</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        form {
+            width: 50%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f4f4f4;
+        }
+        input[type="text"], input[type="password"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 3px;
+            background-color: #fff;
+            box-shadow: 1px 1px 1px #ccc;
+        }
+        input[type="button"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+        }
+        input[type="button"]:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+
+<form>
+    <label for="username">姓名：</label>
+    <input type="text" name="username"  id="username"placeholder="请输入您的姓名">
+
+    <label for="password">密码：</label>
+    <input type="password" name="password"  id="password" placeholder="请输入您的密码">
+    <input type="radio" name="role" value="用户" >用户
+    <input type="radio" name="role" value="巡查员" >巡查员
+    <input type="radio" name="role" value="管理员" >管理员
+    <input type="button" value="修改" id="btn">
+</form>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('#btn').click(function(){
+        var username = $('#username').val();
+        var password = $('#password').val();
+        var role = $('input[name=role]:checked').val();
+        $.ajax({
+            url: '/doupdateUser', // 后端控制器路由地址
+            type: 'PUT',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({ username: username, password: password,role:role}),
+            success: function() {
+                alert('修改成功');
+                window.location.href="/userlist"
+            },
+            error: function( error) {
+                console.log('Error occurred: ' + error);
+                alert('修改失败');
+                window.location.href="/userlist"
+            }
+        });
+    })
+</script>
+
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>停车</title>
+    <link href="../../static/css/blogsheet.css" rel="stylesheet">
+</head>
+<body>
+<div id="main">
+    <h1>请确认停车信息</h1>
+    <form id="write-art-form">
+        <div>泊位编号</div>
+        <input  type="text" placeholder="请输入车牌号" name="Space_number"  id="Space_number">
+        <div>停车路段</div>
+        <input  type="text" placeholder="请输入路段" name="name" id="name">
+        <div>驶入时间</div>
+        <input  type="text" placeholder="请输入泊位" name="start_time"  id="start_time">
+        <div>停车时长</div>
+        <input  type="text" placeholder="请输入泊位" name="time"   id="time">
+        <div>停车费用</div>
+        <input  type="text" placeholder="请输入泊位" name="cost"   id="cost" >
+        <input  type="button" value="返回" onclick="history.back()">
+        <input  type="button" value="确认停车" id="btn">
+    </form>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>//修改和添加文章的表单
+$('#btn').click(function(){
+    $.ajax({
+        url: '/Insider', // 后端控制器路由地址
+        type: 'POST',
+        success: function(response) {
+            // 处理返回的JSON数据
+            alert("返回的数据："+response.message)
+            // console.log(response)
+            if (response.success) {
+                $('#result').html('<p>写入成功！</p>');
+                window.location.href="/"
+            } else {
+                $('#result').html('<p>写入失败：' + response.message + '</p>');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log('Error occurred: ' + error);
+        }
+    });
+})
+
+$(document).ready(function() {
+    $.ajax({
+        url: '/doConfirm', // 后端请求地址，根据实际情况修改
+        type: 'GET',
+        // dataType: 'json',
+        success: function(data) {
+            // console.log(data)
+            $.each(data, function () {
+                // 使用data设置表单默认值
+                $('#Space_number').val(data.space_number);
+                $('#name').val(data.name);
+                $('#start_time').val(data.start_time);
+                $('#time').val(data.time);
+                $('#cost').val(data.cost);
+            })
+        },
+        error: function(xhr, status,error) {
+            console.log('Error occurred: ' + error);
+        }
+    });
+});
+</script>
+</html>

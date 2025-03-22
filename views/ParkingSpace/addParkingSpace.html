@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>添加泊位</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        form {
+            width: 50%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f4f4f4;
+        }
+        input[type="text"], input[type="password"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 3px;
+            background-color: #fff;
+            box-shadow: 1px 1px 1px #ccc;
+        }
+        input[type="button"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+        }
+        input[type="button"]:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+
+<form>
+    <label for="Road_id">路段名：</label>
+    <input type="text" name="Road_id"  id="Road_id" placeholder="请输入路段名">
+    <label for="Space_number">泊位编号：</label>
+    <input type="text" name="Space_number"  id="Space_number" placeholder="请输入泊位编号">
+    <label for="status1">泊位状态：</label>
+    <input type="radio" name="role" value="空闲" id="status1" >空闲
+    <input type="radio" name="role" value="占用" id="status2">占用
+    <input type="button" value="添加" id="btn">
+</form>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('#btn').click(function(){
+        var Road_id = $('#Road_id').val();
+        var Space_number = $('#Space_number').val();
+        var Status = $('input[name=role]:checked').val();
+        $.ajax({
+            url: '/doAddRParkingSpace', // 后端控制器路由地址
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({ Road_id: Road_id, Space_number: Space_number,Status:Status}),
+            success: function(response) {
+                // 处理返回的JSON数据
+                alert("返回的数据："+response.message)
+                console.log(response)
+                if (response.success) {
+                    $('#result').html('<p>添加成功！</p>');
+                    window.location.href="/ParkingSpaceList"
+                } else {
+                    $('#result').html('<p>添加失败：' + response.message + '</p>');
+                    window.location.href="/ParkingSpaceList"
+                }
+            },
+            error: function(xhr, status, error) {
+                alert("返回的数据："+response.message)
+                console.log('Error occurred: ' + error);
+                window.location.href="/ParkingSpaceList"
+            }
+        });
+
+    })
+</script>
+
+</html>

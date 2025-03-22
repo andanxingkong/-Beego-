@@ -1,0 +1,104 @@
+<!DOCTYPE  html>
+<html  lang="zh-CN">
+<head>
+    <meta  charset="UTF-8">
+    <meta  name="viewport"  content="width=device-width,  initial-scale=1.0">
+    <title>路边停车个人中心</title>
+    <style>
+        *  {
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+        body  {
+            font-family: 'Microsoft  YaHei',  sans-serif;
+            line-height:1.6;
+        }
+        header  {
+            background-color: #1abc9c;
+            padding:1rem;
+        }
+        nav  ul  {
+            display:flex;
+            justify-content:space-around;
+            list-style:none;
+        }
+        nav  ul  li  a  {
+            /* color:white */
+            text-decoration:none;
+            padding:0.5rem;
+
+        }
+        /* nav  ul  li  a */
+        nav ul
+        hover  {
+            background-color:#16a085;
+            border-radius:5px;
+        }
+        main  {
+            padding:2rem;
+        }
+        section  {
+            margin-bottom:2rem;
+            text-align: center;
+            background-color:#1abc9c;
+
+        }
+        footer  {
+            background-color:#1abc9c;
+            padding:1rem;
+            text-align:center;
+            color: white;
+        }
+        h1{
+            font-size: 60px;
+            margin-bottom:2rem;
+            text-align: center;
+            color: #1abc9c;
+        }
+        a{
+            color: black;
+        }
+        .r{
+            position: absolute;
+            top: 0px;
+            left: 0;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="r"> <a href="/" onclose="">返回</a></div>
+<header>
+    <nav>
+        <ul>
+        </ul>
+    </nav>
+</header>
+
+<main>
+           <h1>个人中心</h1>
+    <section  id="vehicle-management">
+        <h2><a href="/centerVehicle">车辆管理</a></h2>
+    </section>
+    <section  id="plate-payment">
+        <h2><a href="/UserOrderTableGetAll">订单查询</a></h2>
+    </section>
+    <section  id="feedback">
+        <h2><a href="/upPassword">修改密码</a></h2>
+    </section>
+    <section  id="help-center">
+        <h2>帮助中心</h2>
+    </section>
+    <section  id="about-us">
+        <h2>关于我们</h2>
+    </section>
+    <section  id="settings">
+        <h2>设置</h2>
+    </section>
+</main>
+<footer>
+    <p>2023  路边停车个人中心</p >
+</footer>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录页面</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/lib/login.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/blogsheet.css">
+</head>
+<body>
+{{template "block/nav.html"}}
+
+<div class="htmleaf-container">
+    <div class="wrapper">
+        <div class="container">
+            <h2>登录页面</h2>
+            <form>
+                <input type="text" name="phone" placeholder="Phone" id="phone">
+                <input type="password" name="password" placeholder="Password" id="password">
+                <br>
+                <input type="button" value="登录" id="btn">
+            </form>
+        </div>
+        <ul class="bg-bubbles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+</div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('#btn').click(function () {
+        var phone= $('#phone').val();
+        var password = $('#password').val();
+        $.ajax({
+            url: '/dologin',// 请求地址
+            type: 'POST',  //请求方式
+            dataType: 'json',//预期服务器返回的数据类型
+            contentType: 'application/json',
+            data: JSON.stringify({phone: phone, password: password}), //将string类型转化成json类型
+            // 请求成功时调用的函数
+            success: function (response) {//response是形参名，代表的是返回的数据
+                if (response.message==="用户") {
+                    //弹窗
+                    alert("用户登录成功");
+                    //控制台打印返回的数据
+                    console.log(response);
+                    // $('#result').html('<p>登录成功:' + response.message + '</p>');
+                    window.location.href="/"
+                }else if (response.message==="巡查员") {
+                    //弹窗
+                    alert("巡查员登录成功");
+                    //控制台打印返回的数据
+                    console.log(response);
+                    // $('#result').html('<p>登录成功:' + response.message + '</p>');
+                    window.location.href="/PatrolPersonQuery"
+                }else if (response.message==="管理员") {
+                    //弹窗
+                    alert("管理员登录成功");
+                    //控制台打印返回的数据
+                    console.log(response);
+                    // $('#result').html('<p>登录成功:' + response.message + '</p>');
+                    window.location.href="/main"
+                }else {
+                    // $('#result').html('<p>登录失败:' + response.message + '</p>');
+                    //控制台打印返回的数据
+                    alert("返回的数据："+response.message)
+                    console.log(response)
+                }
+            },
+            //请求失败调用的函数
+            error: function ( error) {
+                console.log('Error occurred:' + error);
+            }
+        });
+    });
+</script>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>添加车辆</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        form {
+            width: 50%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f4f4f4;
+        }
+        input[type="text"], input[type="password"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 3px;
+            background-color: #fff;
+            box-shadow: 1px 1px 1px #ccc;
+        }
+        input[type="button"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+        }
+        input[type="button"]:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+
+<form>
+    <label for="plate_number">车牌号：</label>
+    <input type="text" name="plate_number"  id="plate_number"placeholder="请输入车牌号">
+    <label for="owner_name">车主姓名：</label>
+    <input type="text" name="owner_name"  id="owner_name" placeholder="请输入车主姓名">
+    <label for="status1">车辆状态：</label>
+    <input type="radio" name="role" value="已离开" id="status1" >已离开
+    <input type="radio" name="role" value="未离开" id="status2">未离开
+    <input type="button" value="添加" id="btn">
+</form>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('#btn').click(function(){
+        var plate_number = $('#plate_number').val();
+        var owner_name = $('#owner_name').val();
+        var status = $('input[name=role]:checked').val();
+        $.ajax({
+            url: '/doAddVehicle', // 后端控制器路由地址
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({ plate_number: plate_number,owner_name:owner_name, status:status}),
+            success: function(response) {
+                // 处理返回的JSON数据
+                alert("返回的数据："+response.message)
+                console.log(response)
+                if (response.success) {
+                    $('#result').html('<p>添加成功！</p>');
+                    window.location.href="/VehicleList"
+                } else {
+                    $('#result').html('<p>添加失败：' + response.message + '</p>');
+                    window.location.href="/VehicleList"
+                }
+            },
+            error: function(xhr, status, error) {
+                alert("返回的数据："+response.message)
+                console.log('Error occurred: ' + error);
+                window.location.href="/VehicleList"
+            }
+        });
+
+    })
+</script>
+
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="../../static/Z-external/css/Main.css"/>
+    <script type="text/javascript" src="../../static/Z-external/js/jQuery.js"></script>
+    <script type="text/javascript" src="../../static/Z-external/js/Main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+    h1{
+        display: flex;
+        justify-content: center;
+    }
+    #add{
+        position: fixed;
+        left: 96%; /* 将元素向右移动96% */
+        top: 20px; /* 向下移动20像素 */
+        font-size: 17px;
+    }
+</style>
+<body>
+<div class="right" ><h1>用户列表</h1>
+    <a href="/adduser" id="add">添加</a>
+    <ul id="user-list" ></ul>
+</div>
+
+<input type="text" id="searchInput" placeholder="输入 ID">
+<button id="searchButton">搜索</button>
+<div id="searchResults"></div>
+
+<input type="text" id="mohu" placeholder="输入查询关键字">
+<button id="mohuchaxun">搜索</button>
+<table border="1" width="100%" id="user-list1" bgcolor="white" height="">
+    <thead>
+    <tr>
+        <th>序号</th>
+        <th>姓名</th>
+        <th>电话号码</th>
+        <th>密码</th>
+        <th>邮箱</th>
+        <th>权限</th>
+        <th colspan="2">操作</th>
+    </tr>
+    </thead>
+</table>
+<center>
+    <a  type="button" id="th">上一页</a>
+    <span></span>
+    <a  type="button" id="bt" >下一页</a>
+</center>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var myVariable  =0;
+    $(document).ready(function () {
+        // 发送AJAX请求到后端获取用户信息
+        var page =1;
+        $.ajax({
+            url:  '/getall/'+page, // 后端请求地址，根据实际情况修改
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                alert(data)
+                $.each(data, function (index, user) {
+                    var listItem = $('<tr><td>'+ user.Id+'</td> <td>'+user.Username+'</td><td>'+user.Phone+'</td><td>'+user.Password+'</td><td>'+user.Email+'</td><td>'+user.Role_name+'</td>');
+                    var editLink = $('<td>修改 </td>').on('click', function () {
+                        alert('修改用户 ID: ' + user.Id);
+                        window.location.href="/updateUser/"+user.Id
+                    });
+                    var deleteLink = $(' <td> <a href="#"> 删除</a></td></tr>').on('click', function () {
+                        alert('删除用户 ID: ' + user.Id);
+                        $.ajax({
+                            url: '/deleteuser/'+user.Id, // 后端请求地址，根据实际情况修改
+                            type: 'DELETE',
+                            success: function() {
+                                listItem.remove();
+                            }
+                        })
+                    });
+                    listItem.append(editLink).append(deleteLink);
+                    $('#user-list1').append(listItem);
+                });
+            },
+            error: function(xhr, status, error) {
+                alert("出错了")
+                console.log('Error occurred: ' + error);
+            }
+        });
+
+    function renderData() {
+        // 清空原有数据
+        $('#user-list1').empty();
+    }
+    $('#th').click(function(){
+        if (page>1) {
+            page -= 1;
+            if (page == 1 || page>1) {
+                $.ajax({
+                    url: '/getall/' + page, // 后端请求地址，根据实际情况修改
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        renderData()
+                        a = data.length
+                        $.each(data, function (index, user) {
+                            var listItem = $('<tr><td>'+ user.Id+'</td> <td>'+user.Username+'</td><td>'+user.Phone+'</td><td>'+user.Password+'</td><td>'+user.Email+'</td><td>'+user.Role_name+'</td>');
+                            var editLink = $('<td>修改 </td>').on('click', function () {
+                                alert('修改用户 ID: ' + user.Id);
+                                window.location.href = "/updateUser/" + user.Id
+                            });
+                            var deleteLink = $(' <td> <a href="#"> 删除</a></td></tr>').on('click', function () {
+                                alert('删除用户 ID: ' + user.Id);
+                                $.ajax({
+                                    url: '/deleteuser/' + user.Id, // 后端请求地址，根据实际情况修改
+                                    type: 'DELETE',
+                                    success: function () {
+                                        listItem.remove();
+                                    }
+                                })
+                            });
+                            listItem.append(editLink).append(deleteLink);
+                            $('#user-list1').append(listItem);
+
+                        });
+
+                    },
+                    error: function (xhr, status, error) {
+                        alert("出错了")
+                        console.log('Error occurred: ' + error);
+                    }
+                });
+            }
+        }
+    })
+        $('#bt').click(function(){
+            page+=1;
+            $.ajax({
+                url: '/getall/'+page, // 后端请求地址，根据实际情况修改
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    renderData()
+                    $.each(data, function (index, user) {
+                        var listItem = $('<tr><td>'+ user.Id+'</td> <td>'+user.Username+'</td><td>'+user.Phone+'</td><td>'+user.Password+'</td><td>'+user.Email+'</td><td>'+user.Role_name+'</td>');
+                        var editLink = $('<td>修改 </td>').on('click', function () {
+                            alert('修改用户 ID: ' + user.Id);
+                            window.location.href="/updateUser/"+user.Id
+                        });
+
+                        var deleteLink = $(' <td> <a href="#"> 删除</a></td></tr>').on('click', function () {
+                            alert('删除用户 ID: ' + user.Id);
+                            $.ajax({
+                                url: '/deleteuser/'+user.Id, // 后端请求地址，根据实际情况修改
+                                type: 'DELETE',
+                                success: function() {
+                                    listItem.remove();
+                                }
+                            })
+                        });
+                        listItem.append(editLink).append(deleteLink);
+                        $('#user-list1').append(listItem);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    alert("出错了")
+                    console.log('Error occurred: ' + error);
+                }
+            });
+        })
+        //搜索
+        $('#searchButton').click(function(){
+            var searchInput= $('#searchInput').val();
+            $.ajax({
+                url: '/userGetOne/'+searchInput, // 后端请求地址，根据实际情况修改
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    renderData()
+                    var listItem = $('<tr><td>'+ data.Id+'</td> <td>'+data.username+'</td><td>'+data.phone+'</td><td>'+data.password+'</td><td>'+data.email+'</td><td>'+data.role+'</td>');
+                    var editLink = $('<td>修改 </td>').on('click', function () {
+                        alert('修改用户 ID: ' +data.Id);
+                        window.location.href="/updateUser/"+data.Id
+                    });
+                    var deleteLink = $(' <td> <a href="#"> 删除</a></td></tr>').on('click', function () {
+                        alert('删除用户 ID: ' +data.Id);
+                        $.ajax({
+                            url: '/deleteuser/'+data.Id, // 后端请求地址，根据实际情况修改
+                            type: 'DELETE',
+                            success: function() {
+                                listItem.remove();
+                            }
+                        })
+                    });
+                    listItem.append(editLink).append(deleteLink);
+                    $('#user-list1').append(listItem);
+                }
+            })
+        })
+        //模糊搜索
+        $('#mohuchaxun').click(function(){
+            var mohu= $('#mohu').val();
+            $.ajax({
+                url: '/userGetSome', // 后端请求地址，根据实际情况修改
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({mohu: mohu}), //将string类型转化成json类型
+                success: function (data) {
+                    renderData()
+                    $.each(data, function (index, user) {
+                        var listItem = $('<tr><td>'+ user.Id+'</td> <td>'+user.Username+'</td><td>'+user.Phone+'</td><td>'+user.Password+'</td><td>'+user.Email+'</td><td>'+user.Role_name+'</td>');
+                        var editLink = $('<td>修改 </td>').on('click', function () {
+                        alert('修改用户 ID: ' +user.Id);
+                        window.location.href="/updateUser/"+user.Id
+                    });
+
+                    var deleteLink = $(' <td> <a href="#"> 删除</a></td></tr>').on('click', function () {
+                        alert('删除用户 ID: ' +user.Id);
+                        $.ajax({
+                            url: '/deleteuser/'+user.Id, // 后端请求地址，根据实际情况修改
+                            type: 'DELETE',
+                            success: function() {
+                                listItem.remove();
+                            }
+                        })
+                    });
+                    listItem.append(editLink).append(deleteLink);
+                    $('#user-list1').append(listItem);
+                    });
+                }
+            })
+        })
+    });
+    window.myVariable = myVariable;
+</script>
+
+</body>
+</html>

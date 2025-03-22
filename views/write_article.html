@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>泊车</title>
+    <link href="../static/css/blogsheet.css" rel="stylesheet">
+</head>
+<body>
+<div id="main">
+    <h1>请输入停车信息</h1>
+    <form id="write-art-form">
+        <div>车牌号</div>
+        <input type="text" placeholder="请输入车牌号" name="plate_number"  id="plate_number">
+        <div>路段</div>
+        <input type="text" placeholder="请输入路段" name="name"  list="source1" id="name">
+        <datalist id="source1">
+            <option value="科技1路">
+            <option value="科技2路">
+            <option value="科技3路">
+        </datalist>
+        <div>泊位</div>
+        <input  type="text" placeholder="请输入泊位" name="space_number"  list="source2" id="space_number">
+        <datalist id="source2">
+            <option value="A-001">
+            <option value="A-002">
+            <option value="A-003">
+        </datalist>
+        <input type="button" value="返回" onclick="history.back()">
+        <input type="button" value="下一步" id="btn">
+    </form>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>//修改和添加文章的表单
+$('#btn').click(function(){
+    var plate_number = $('#plate_number').val();
+    var name = $('#name').val();
+    var space_number = $('#space_number').val();
+    $.ajax({
+        url: '/dochar', // 后端控制器路由地址
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify({ plate_number: plate_number,name:name, space_number: space_number}),
+        success: function(response) {
+            // 处理返回的JSON数据
+            alert("返回的数据："+response.message)
+            console.log(response)
+            if (response.success) {
+                $('#result').html('<p>写入成功！</p>');
+                window.location.href="/confirm"
+            } else {
+                $('#result').html('<p>写入失败：' + response.message + '</p>');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log('Error occurred: ' + error);
+        }
+    });
+
+})
+</script>
+</html>

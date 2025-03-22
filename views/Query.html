@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>订单列表</title>
+    <style>
+        .order {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .order h3 {
+            margin-top: 0;
+        }
+        #searchButton{
+            text-align: center;
+        }
+        #8888{
+            text-align: center;
+        }
+        .r{
+            position: absolute;
+            top: 0px;
+            right: 0;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="r"> <a href="/center" onclose="">返回</a></div>
+<div id="8888">
+    <input type="text" id="searchInput" placeholder="输入要完成订单的ID">
+    <button id="searchButton">结束订单</button>
+    <div id="searchResults"></div>
+</div>
+
+
+<div id="订单列表">
+
+</div>
+<input type="button" value="查询订单" id="btn">
+<script>
+    $('#btn').click(function () {
+        $.ajax({
+            url: '/doUserOrderTableGetAll',
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {    // 数据获取成功后的处理逻辑    // 遍历数据，生成订单的HTML代码
+                var html = '';
+                for (var i = 0; i < data.length; i++) {
+                    html += '<div class="order">';
+                    html += '<h3>' + '<p >订单id：'+data[i].R_id+'</p>' + '</h3>';
+                    html += '<p>停车路段：' + data[i].name + '</p >';
+                    html += '<p>泊位：' + data[i].Space + '</p >';
+                    html += '<p>开始时间：' + data[i].Start_time + '</p >';
+                    html += '<p>结束时间：' + data[i].End_time + '</p >';
+                    html += '<p>停车费用：' + data[i].Cost + '</p >';
+                    html += '<p>订单状态：' + data[i].Status + '</p >';
+                    html += '</div>';
+                }    // 将生成的HTML代码插入到页面中
+                 $('#订单列表').html(html);
+            },
+            error: function() {    // 数据获取失败后的处理逻辑
+                console.log('获取数据失败');
+            }
+        })
+    });
+        //搜索
+        $('#searchButton').click(function(){
+            var searchInput= $('#searchInput').val();
+            $.ajax({
+                url: '/UPUserOrderTableGetAll/'+searchInput, // 后端请求地址，根据实际情况修改
+                type: 'PUT',
+                dataType: 'json',
+                success: function () {
+                    alert("要完成订单的id:"+searchInput);
+                    //控制台打印返回的数据
+                    console.log(response);
+                    window.location.href = "/UserOrderTableGetAll"
+                }
+        });
+    });
+</script>
+</body>
+
+</html>

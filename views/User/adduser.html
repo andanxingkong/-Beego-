@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>添加用户</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        form {
+            width: 50%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f4f4f4;
+        }
+        input[type="text"], input[type="password"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 3px;
+            background-color: #fff;
+            box-shadow: 1px 1px 1px #ccc;
+        }
+        input[type="button"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+        }
+        input[type="button"]:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+
+<form>
+    <label for="username">姓名：</label>
+    <input type="text" name="username"  id="username"placeholder="请输入您的姓名">
+    <label for="phone">电话号码：</label>
+    <input type="text" name="phone"  id="phone" placeholder="请输入您的电话号码">
+    <label for="password">密码：</label>
+    <input type="password" name="password"  id="password" placeholder="请输入您的密码">
+    <label for="email">邮箱：</label>
+    <input type="text" name="email"  id="email" placeholder="请输入您的邮箱">
+    <input type="radio" name="role" value="用户" >用户
+    <input type="radio" name="role" value="巡查员" >巡查员
+    <input type="radio" name="role" value="管理员" >管理员
+    <input type="button" value="添加" id="btn">
+</form>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('#btn').click(function(){
+        var username = $('#username').val();
+        var phone = $('#phone').val();
+        var password = $('#password').val();
+        var email = $('#email').val();
+        var role = $('input[name=role]:checked').val();
+        $.ajax({
+            url: '/doadduser', // 后端控制器路由地址
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({ username: username,phone:phone, password: password,email:email,role:role}),
+            success: function(response) {
+                // 处理返回的JSON数据
+                alert("返回的数据："+response.message)
+                console.log(response)
+                if (response.success) {
+                    $('#result').html('<p>添加成功！</p>');
+                    window.location.href="/userlist"
+                } else {
+                    $('#result').html('<p>添加失败：' + response.message + '</p>');
+                    window.location.href="/userlist"
+                }
+            },
+            error: function(xhr, status, error) {
+                alert("返回的数据："+response.message)
+                console.log('Error occurred: ' + error);
+                window.location.href="/userlist"
+            }
+        });
+
+    })
+</script>
+
+</html>

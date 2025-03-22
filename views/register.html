@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册页面</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/lib/login.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/blogsheet.css">
+</head>
+<body>
+{{template "block/nav.html"}}
+<div class="htmleaf-container">
+    <div class="wrapper">
+        <div class="container">
+            <h2>注册页面</h2>
+            <form>
+                <input type="text" name="username" placeholder="Username" id="username">
+                <input type="text" name="phone" placeholder="Phone" id="phone">
+                <input type="password" name="password" placeholder="Password" id="password">
+                <input type="text" name="email" placeholder="Email" id="email">
+                <input type="radio" name="role" value="用户" >用户
+                <input type="radio" name="role" value="巡查员" >巡查员
+                <input type="radio" name="role" value="管理员" >管理员
+                <br>
+                <input type="button" value="注册" id="btn">
+            </form>
+        </div>
+
+        {{/*背景动画*/}}
+        <ul class="bg-bubbles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+</div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('#btn').click(function(){
+        var username = $('#username').val();
+        var phone = $('#phone').val();
+        var password = $('#password').val();
+        var email = $('#email').val();
+        var role = $('input[name=role]:checked').val();
+        $.ajax({
+            url: '/doregister', // 后端控制器路由地址
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({ username: username,phone:phone, password: password,email:email,role:role}),
+            success: function(response) {
+                // 处理返回的JSON数据
+                alert("返回的数据："+response.message)
+                console.log(response)
+                if (response.success) {
+                    $('#result').html('<p>注册成功！</p>');
+                    window.location.href="/login"
+                } else {
+                    $('#result').html('<p>注册失败：' + response.message + '</p>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log('Error occurred: ' + error);
+            }
+        });
+
+    })
+</script>
+
+</html>
